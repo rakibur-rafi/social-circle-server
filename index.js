@@ -23,7 +23,22 @@ export async function connectToMongoDB() {
     console.dir(err);
   }
 }
-connectToMongoDB();
+
+const mongoClient= await connectToMongoDB();
+
+const db= mongoClient.db("social-circle")
+const eventsCollection= db.collection("events")
+const joinedEventsCollection= db.collection("joinedEvents")
+
+app.get("/", (req, res) => {
+  res.send("API is running");
+})
+
+app.post("/add-event", async (req, res) => {
+    const data= req.body
+    const result= await eventsCollection.insertOne(data)
+    res.send(result)
+})
 
 
 app.listen(PORT, () => {
