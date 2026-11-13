@@ -67,6 +67,35 @@ app.get("/events/:id", async (req, res) => {
     res.send(result)
 })
 
+app.post("/joined-events", async (req, res) => {
+    const data= req.body
+    const result= await joinedEventsCollection.insertOne(data)
+    res.send(result)
+})
+
+app.get("/joined-events", async (req, res) => {
+    const result= await joinedEventsCollection.find({}).toArray()
+    res.send(result)
+})
+
+app.get("/joined-events/:email", async (req, res) => {
+    const email= req.params.email
+    const result= await joinedEventsCollection.find({email: email}).toArray()
+    res.send(result)
+})
+app.get("/joined-events/:id", async (req, res) => {
+    const id= req.params.id
+    const result= await joinedEventsCollection.find({eventId: id}).toArray()
+    res.send(result)
+})
+
+app.delete("/joined-events/:email/:id", async (req, res) => {
+    const email= req.params.email
+    const id= req.params.id
+    const result= await joinedEventsCollection.deleteOne({email: email, eventId: id})
+    res.send(result)
+})
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 })
