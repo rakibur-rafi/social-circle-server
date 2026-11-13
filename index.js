@@ -39,6 +39,22 @@ app.post("/add-event", async (req, res) => {
     const result= await eventsCollection.insertOne(data)
     res.send(result)
 })
+app.get("/events/:email", async (req, res) => {
+    const email= req.params.email
+    const result= await eventsCollection.find({email: email}).toArray()
+    res.send(result)
+})
+app.patch("/events/:id", async (req, res) => {
+    const id= req.params.id
+    const data= req.body
+    const result= await eventsCollection.updateOne({_id: new ObjectId(id)}, {$set: data})
+    res.send(result)
+})
+app.delete("/events/:id", async (req, res) => {
+    const id= req.params.id
+    const result= await eventsCollection.deleteOne({_id: new ObjectId(id)})
+    res.send(result)
+})
 
 app.get("/events", async (req, res) => {
     const result= await eventsCollection.find({}).toArray()
