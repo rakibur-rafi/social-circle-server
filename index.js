@@ -57,14 +57,14 @@ app.delete("/events/:id", async (req, res) => {
 })
 
 app.get("/events", async (req, res) => {
-    const result= await eventsCollection.find({}).toArray()
-    res.send(result)
-})
+    const today = new Date().toISOString().split("T")[0];
 
-app.get("/recent-events", async (req, res) => {
-    const result= await eventsCollection.find().limit(6).sort({eventDate: 1}).toArray()
-    res.send(result)
-})
+    const result = await eventsCollection.find({
+        eventDate: { $gte: today }
+    }).toArray();
+
+    res.send(result);
+});
 
 app.get("/events/:id", async (req, res) => {
     const id= req.params.id
