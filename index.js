@@ -61,6 +61,11 @@ app.get("/events", async (req, res) => {
     res.send(result)
 })
 
+app.get("/recent-events", async (req, res) => {
+    const result= await eventsCollection.find().limit(6).sort({eventDate: 1}).toArray()
+    res.send(result)
+})
+
 app.get("/events/:id", async (req, res) => {
     const id= req.params.id
     const result= await eventsCollection.findOne({_id: new ObjectId(id)})
